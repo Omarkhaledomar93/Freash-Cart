@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from "./ProductDetails.module.css"
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import Slider from 'react-slick'
 import { Helmet } from 'react-helmet'
+import { cartContext } from '../../Context/CartContext/CartContext'
+import toast from 'react-hot-toast'
 
 export default function ProductDetails() {
 
@@ -38,6 +40,15 @@ const [details, setDetails] = useState({})
   }
   
 
+ const {addToCart}= useContext(cartContext)
+
+async function addProdcut(id){
+ let {data}= await addToCart(id)
+  toast.success(data?.message,{
+    position: "top-right",
+  });
+
+ }
   
   
   return (
@@ -80,7 +91,10 @@ const [details, setDetails] = useState({})
         </div>
  
         </div>
-        <button className='bg-green-500 rounded p-2 mt-3 text-white'>
+        <button 
+        onClick={()=>(addProdcut(id))}
+
+        className='bg-green-500 rounded p-2 mt-3 text-white'>
           {" "}
            Add to cart</button>
       </div>

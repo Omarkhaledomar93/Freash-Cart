@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, createHashRouter, RouterProvider } from "react-router-dom"
 import MainLayout from "./Pages/MainLayout/MainLayout"
 import Home from "./Pages/Home/Home"
 import Cart from "./Pages/Cart/Cart"
@@ -9,13 +9,16 @@ import CounterContextProvider from "./Context/CounterContext/CounterContext"
 import UserContextProvider from "./Context/UserContext/UserContext"
 import ProtectedRoute from "./Pages/ProtectedRoute/ProtectedRoute"
 import ProductDetails from "./Pages/ProductDetails/ProductDetails"
+import { QueryClient, QueryClientProvider } from "react-query"
+import CartContextProvider from "./Context/CartContext/CartContext"
+import { Toaster } from "react-hot-toast"
 
 
 
 function App() {
 
 
-  let routers = createBrowserRouter([
+  let routers = createHashRouter([
     {
       path: "",
       element: <MainLayout />,
@@ -24,7 +27,7 @@ function App() {
           index: true,
           element:
             <ProtectedRoute>
-              <Home/>
+              <Home />
             </ProtectedRoute>
         },
         {
@@ -34,33 +37,45 @@ function App() {
               <Cart />
             </ProtectedRoute>
         },
-        {path:"productdetails/:id", 
-          element:<ProtectedRoute>
-            <ProductDetails/>
+        {
+          path: "productdetails/:id",
+          element: <ProtectedRoute>
+            <ProductDetails />
           </ProtectedRoute>
-           },
+        },
         { path: "login", element: <Login /> },
         { path: "register", element: <Register /> },
         { path: "*", element: <NotFound2 /> }
       ]
     }])
+
+
+  const queryClient = new QueryClient()
+
+
+
   return (
 
-    <UserContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserContextProvider>
 
 
-      <CounterContextProvider>
+        <CartContextProvider>
+          <CounterContextProvider>
 
-        <RouterProvider router={routers}></RouterProvider>
+            <RouterProvider router={routers}></RouterProvider>
+            <Toaster />
+          </CounterContextProvider>
+        </CartContextProvider>
 
-      </CounterContextProvider>
+      </UserContextProvider>
 
 
-    </UserContextProvider>
-
-
-
+    </QueryClientProvider>
   )
+
+
+
 }
 
 export default App

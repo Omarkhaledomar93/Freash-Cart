@@ -17,6 +17,8 @@ const settings = {
   slidesToShow: 4,
   slidesToScroll: 1,
   arrow: false,
+  autoplay: true,
+  autoplaySpeed: 1000,
 };
 responsive: [
   {
@@ -34,6 +36,7 @@ responsive: [
       slidesToShow: 1,
       slidesToScroll: 2,
       initialSlide: 2
+    
     }
   },
   {
@@ -72,7 +75,7 @@ responsive: [
       
       {categories.map((category)=>
     
-    <div className='h-[200px]  'key={category._id}>
+    <div className='h-[200px] cursor-pointer 'key={category._id}>
        <img src={category.image} className='h-full' alt="" />
        <h3>{category.name }</h3>
 
