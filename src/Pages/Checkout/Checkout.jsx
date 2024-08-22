@@ -1,43 +1,42 @@
-import React, { useContext } from 'react'
-
-import style from "./Login.module.css"
+import React from 'react'
 import { Formik, useFormik } from 'formik'
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userContext } from '../../Context/UserContext/UserContext';
 import { Helmet } from 'react-helmet';
 
-export default function Login() {
+export default function Register() {
 
   let validationSchema= Yup.object({
-   email:Yup.string().required().email(),
-    password:Yup.string().required().matches(/^[0-9a-z]{3,9}$/, 'Password Does not match'),
+    details:Yup.string().required('Details is Required'),
+    city:Yup.string().required('City is Required'),
+    phone:Yup.string()
+    .required()
+    .matches(/^01[0-25][0-9]{8}$/, 'Phone number does not match' )
 
   })
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const {setUserToken}=useContext(userContext)
 
   let navigate= useNavigate()
 
-  function handleLogin(values) {
+  function handlePayment(values) {
+    console.log(values);
+    
 setIsLoading(true)
-    axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values)
-    .then((data)=>{
-      if (data.data.message==="success") {
-        setUserToken(data.data.token) 
-        localStorage.setItem('userToken',data.data.token)
-    setIsLoading(false)
-        navigate("/")
+    // axios.post('https://ecommerce.routemisr.com/api/v1/auth/signup', values)
+    // .then((data)=>{
+    //   if (data.data.message==="success") {
         
-      }
-    })
+    // setIsLoading(false)
+    //     navigate('/login')
+        
+    //   }
+    // })
     .catch((error)=>{
-      isLoading(false)
       setError(error.response.data.message)
- 
+  isLoading(true)
   })
 
    
@@ -48,15 +47,15 @@ setIsLoading(true)
   const formik = useFormik({
 
     initialValues: {
-      email: "",
-      password: "",
-     
+      details: "",
+      city: "",
+      phone: "",
 
 
 
     },
     validationSchema:validationSchema,
-    onSubmit: handleLogin,
+    onSubmit: handlePayment,
 
   })
   
@@ -71,16 +70,15 @@ setIsLoading(true)
 
 
     <div className='container '>
-      
 
       
-      <Helmet>
+<Helmet>
 
-        <title>Login</title>
+<title>Register</title>
 
-      </Helmet>
+</Helmet>
       <div className='w-3/4 mx-auto mt-5'>
-        <h1 className='text-green-500 font-bold text-3xl'>Login:</h1>
+        <h1 className='text-green-500 font-bold text-3xl' >Register:</h1>
 
 
         <form className='my-3' onSubmit={formik.handleSubmit}>
@@ -88,63 +86,90 @@ setIsLoading(true)
 
           
           {error&&<div className='bg-red-200 py-2'>{error}</div> }
+          <div className="relative my-5">
+            <input
+              type="text"
+              id="details"
+              className="w-full block px-2.5 pb-2.5 pt-4  text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+
+              name='details'
+              placeholder=" "
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.details}
+
+            />
+
+            <label
+              htmlFor="floating_outlined" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
+              Address Details:</label>
+
+              {formik.touched.details && formik.errors.details ? (
+              <div className="text-red-500 text-sm">{formik.errors.details}</div>
+            ) : null}
+
+
+
+
+
+          </div>
+
+          <div className="relative my-5">
+            <input
+              type="text"
+              id="city"
+              className="w-full block px-2.5 pb-2.5 pt-4  text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
+
+              name='city'
+              placeholder=" "
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.city}
+
+            />
+
+            <label
+              htmlFor="floating_outlined" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
+              City</label>
+
+              {formik.touched.city && formik.errors.city ? (
+              <div className="text-red-500 text-sm">{formik.errors.city}</div>
+            ) : null}
+
+
+
+
+
+          </div>
+
          
           <div className="relative my-5">
             <input
-              type="email"
-              id="email"
+              type="tele"
+              id="phone"
               className="w-full block px-2.5 pb-2.5 pt-4  text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
 
-              name='email'
+              name='phone'
               placeholder=" "
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.email}
+              value={formik.values.phone}
 
             />
 
             <label
               htmlFor="floating_outlined" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
-              Email</label>
+              Phone </label>
 
-              {formik.touched.email && formik.errors.email ? (
-              <div className="text-red-500 text-sm">{formik.errors.email}</div>
+
+
+
+              {formik.touched.phone && formik.errors.phone ? (
+              <div className="text-red-500 text-sm">{formik.errors.phone}</div>
             ) : null}
 
 
-
-
-
           </div>
-
-          <div className="relative my-5">
-            <input
-              type="password"
-              id="password"
-              className="w-full block px-2.5 pb-2.5 pt-4  text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-green-500 focus:outline-none focus:ring-0 focus:border-green-600 peer"
-
-              name='password'
-              placeholder=" "
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-
-            />
-
-            <label
-              htmlFor="floating_outlined" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-green-600 peer-focus:dark:text-green-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1">
-              Password</label>
-
-
-              {formik.touched.password && formik.errors.password ? (
-              <div className="text-red-500 text-sm">{formik.errors.password}</div>
-            ) : null}
-
-
-
-
-          </div>
-            {" "}
           <button
             type="submit"
             className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">

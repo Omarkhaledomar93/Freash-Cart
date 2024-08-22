@@ -20,7 +20,7 @@ const [details, setDetails] = useState({})
     .then((data)=> setDetails(data.data.data))
     .catch((error)=> console.log(error))
 
-
+    
   }
   
   useEffect(() => {
@@ -40,12 +40,14 @@ const [details, setDetails] = useState({})
   }
   
 
- const {addToCart}= useContext(cartContext)
+ const {addToCart, setNumberOfCartItems}= useContext(cartContext)
 
 async function addProdcut(id){
  let {data}= await addToCart(id)
-  toast.success(data?.message,{
-    position: "top-right",
+
+ setNumberOfCartItems(data.numOfCartItems)
+ toast.success(data?.message,{
+    position: "bottom-right",
   });
 
  }

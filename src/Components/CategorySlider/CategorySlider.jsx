@@ -67,7 +67,7 @@ responsive: [
 
 
 
-   <div className=' my-5 py-4'>
+   <div className=' my-5 py-4 overflow-hidden'>
 
     <h2 className='text-2xl font-bold text-green-500 pb-3'>Shop Popular Categories </h2>
 

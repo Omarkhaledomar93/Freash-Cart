@@ -6,14 +6,16 @@ import toast from 'react-hot-toast'
 
 export default function ProductItem({ product }) {
 
-  const { addToCart } = useContext(cartContext)
+  const { addToCart, setNumberOfCartItems } = useContext(cartContext)
 
   async function addProdcut(id) {
 
     let { data } = await addToCart(id)
+   
+    setNumberOfCartItems(data.numOfCartItems)
     toast.success(data?.message,
       {
-        position: "top-right",
+        position: "bottom-right",
       });
   }
 
@@ -36,7 +38,7 @@ export default function ProductItem({ product }) {
           {product.title.split(' ').slice(0, 2).join(' ')}</h6>
 
         <div className='row justify-between'>
-          <p>{product.price}</p>
+          <p>{product.price} EGP</p>
           <div className='text-slate-400'>
             <i className='fa-solid fa-star text-yellow-400'></i>
             <span>{product.ratingsAverage}</span>

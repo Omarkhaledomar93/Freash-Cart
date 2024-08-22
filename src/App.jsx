@@ -12,13 +12,14 @@ import ProductDetails from "./Pages/ProductDetails/ProductDetails"
 import { QueryClient, QueryClientProvider } from "react-query"
 import CartContextProvider from "./Context/CartContext/CartContext"
 import { Toaster } from "react-hot-toast"
+import Checkout from "./Pages/Checkout/Checkout"
 
 
 
 function App() {
 
 
-  let routers = createHashRouter([
+  let routers = createBrowserRouter([
     {
       path: "",
       element: <MainLayout />,
@@ -35,6 +36,13 @@ function App() {
           element:
             <ProtectedRoute>
               <Cart />
+            </ProtectedRoute>
+        },
+        {
+          path: "checkout",
+          element:
+            <ProtectedRoute>
+              <Checkout />
             </ProtectedRoute>
         },
         {

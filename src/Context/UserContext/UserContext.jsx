@@ -7,7 +7,7 @@ export let userContext=createContext()
 
 export default function UserContextProvider(props) {
 
-const [userToken, setUserToken] = useState(null)
+const [userToken, setUserToken] = useState(localStorage.getItem("userToken"));
 
 useEffect(() => {
 
